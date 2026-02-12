@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XP To-Do List - Premium Luna</title>
+
+    <!-- Social Share Meta Tags (Open Graph) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://thitimek.github.io/windowsxp-to-do-list/">
+    <meta property="og:title" content="XP To-Do List - Premium Luna">
+    <meta property="og:description" content="จัดการรายการงานของคุณในสไตล์ Windows XP สุดคลาสสิก!">
+    <!-- ใช้ลิงก์รูปภาพที่คุณอัปโหลดขึ้น GitHub -->
+    <meta property="og:image" content="https://raw.githubusercontent.com/thitimek/windowsxp-to-do-list/main/og-image.png.png">
+
+    <!-- Twitter Meta Tags -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://thitimek.github.io/windowsxp-to-do-list/">
+    <meta property="twitter:title" content="XP To-Do List - Premium Luna">
+    <meta property="twitter:description" content="จัดการรายการงานของคุณในสไตล์ Windows XP สุดคลาสสิก!">
+    <meta property="twitter:image" content="https://raw.githubusercontent.com/thitimek/windowsxp-to-do-list/main/og-image.png.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/tahoma');
+        
+        body {
+            font-family: 'Tahoma', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: black;
+        }
+
+        /* Welcome Screen Styling - ปรับ Alignment ให้ตรงกึ่งกลางแม่นยำขึ้น */
+        #welcomeScreen {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            background: #000000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* จัดกึ่งกลางแนวตั้งและแนวนอน */
+            cursor: pointer;
+            transition: opacity 1s ease-out;
+            overflow: hidden;
+            animation: fadeInAll 5s ease-in-out forwards;
+            text-align: center;
+        }
+
+        #welcomeLogo {
+            width: 240px;
+            height: auto;
+            display: block;
+            margin: 0 0 20px 0; /* กำหนด margin ให้แน่นอนเพื่อไม่ให้เบี้ยว */
+        }
+
+        @keyframes fadeInAll {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .click-to-start {
+            color: rgba(255,255,255,0.7);
+            font-family: 'Tahoma', sans-serif;
+            font-size: 16px;
+            letter-spacing: 1px;
+            animation: pulse 2s infinite;
+            z-index: 1000;
+            pointer-events: none;
+            margin-top: 10px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* -------------------------------------------------- */
+        /* โค้ดส่วนหลังจากนี้ ห้ามแก้ (คงเดิมตามต้นฉบับของคุณทุกประการ) */
+        /* -------------------------------------------------- */
+
+        /* Main Desktop Area */
+        #desktop {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 1.5s ease-in;
+        }
+
+        .xp-window-shadow {
+            box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .xp-title-bar {
+            background: linear-gradient(to bottom, #0058e3 0%, #3583f7 10%, #0058e3 40%, #0058e3 100%);
+            position: relative;
+            z-index: 50;
+            height: 48px;
+            cursor: move;
+        }
+
+        .editable-title-container {
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            padding: 2px 8px;
+            cursor: text;
+            display: flex;
+            align-items: center;
+        }
+
+        .editable-title-container:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+        }
+
+        .xp-title-text {
+            font-size: 20px; 
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            color: white;
+            text-shadow: 1.5px 1.5px 1.5px rgba(0,0,0,0.5);
+        }
+
+        .xp-title-input {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            background: white;
+            color: #003399;
+            border: 2px solid #ff9900;
+            outline: none;
+            padding: 0 4px;
+            width: 100%;
+            height: 36px;
+            box-shadow: inset 1px 1px 2px rgba(0,0,0,0.3);
+            border-radius: 2px;
+        }
+
+        .control-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 3px;
+            border: 1px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+            cursor: pointer;
+            padding: 0;
+        }
+        
+        .control-btn .material-symbols-rounded {
+            font-variation-settings: 'wght' 600, 'opsz' 24;
+            display: block;
+            line-height: 1;
+        }
+
+        .control-btn:hover { filter: brightness(1.2); }
+        .control-btn:active { filter: brightness(0.8); transform: translate(1px, 1px); }
+
+        .btn-minimize, .btn-maximize { background: linear-gradient(135deg, #4d8df5 0%, #0055e3 100%); }
+        .btn-close { background: linear-gradient(135deg, #f58d7a 0%, #e31010 100%); }
+
+        .xp-sidebar {
+            background: linear-gradient(to bottom, #748aff 0%, #4058d3 100%);
+            width: 220px;
+            flex-shrink: 0;
+            padding: 12px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+        }
+
+        .sidebar-box {
+            background: #d6dff7;
+            border-radius: 6px; 
+            overflow: hidden;
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+            border: 1px solid #ffffff;
+            transition: all 0.2s;
+        }
+
+        .sidebar-header {
+            background: linear-gradient(to right, #ffffff 0%, #c6d3f7 100%);
+            padding: 6px 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .sidebar-header:hover span { color: #316ac5; }
+
+        .sidebar-header span {
+            color: #215dc6;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .sidebar-content {
+            background: white;
+            padding: 10px;
+        }
+
+        .xp-button {
+            background: #ffffff;
+            border: 1.5px solid #003c74;
+            border-radius: 5px;
+            color: #000;
+            padding: 4px 18px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            position: relative;
+            box-shadow: inset 0 0 4px rgba(0,0,0,0.05), 1px 1px 2px rgba(0,0,0,0.1);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .xp-button:hover {
+            border-color: #4a90e2;
+            background: #ffffff;
+            box-shadow: inset 0 0 10px rgba(74, 144, 226, 0.4), 1px 1px 4px rgba(0,0,0,0.15);
+            outline: none;
+        }
+
+        .xp-button:active {
+            background: #f0f0f0;
+            box-shadow: inset 2px 2px 5px rgba(0,0,0,0.1);
+            transform: translate(1px, 1px);
+        }
+
+        .xp-button-sm {
+            padding: 1px 10px;
+            font-size: 10px;
+            border-width: 1px;
+            border-radius: 3px;
+        }
+
+        .xp-button-danger { border-color: #8b0000; }
+        .xp-button-danger:hover { border-color: #e31010; box-shadow: inset 0 0 10px rgba(227, 16, 16, 0.2); }
+
+        .xp-input {
+            border: 1px solid #716f64;
+            border-radius: 5px;
+            box-shadow: inset 1px 1px 1px rgba(0,0,0,0.1);
+            padding: 4px 8px;
+            font-size: 13px;
+        }
+
+        .xp-input:focus {
+            border-color: #4a90e2;
+            box-shadow: inset 1px 1px 1px rgba(0,0,0,0.1), 0 0 2px rgba(74, 144, 226, 0.5);
+        }
+
+        .xp-progress-container {
+            background: #ffffff;
+            border: 1px solid #716f64;
+            height: 18px;
+            position: relative;
+            overflow: hidden;
+            padding: 1px;
+        }
+
+        .xp-progress-track {
+            display: flex;
+            gap: 2px;
+            height: 100%;
+        }
+
+        .xp-progress-block {
+            width: 8px;
+            height: 100%;
+            background: linear-gradient(to bottom, #b3f3b3 0%, #30a030 40%, #108010 100%);
+            border-radius: 1px;
+            animation: blockIn 0.3s forwards;
+        }
+
+        @keyframes blockIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
+
+        #pieSegment { transition: stroke-dasharray 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        .custom-scroll::-webkit-scrollbar { width: 14px; }
+        .custom-scroll::-webkit-scrollbar-track { background: #ece9d8; border: 1px solid #716f64; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #c3c3c3; border: 2px solid #ece9d8; box-shadow: inset 1px 1px #fff, inset -1px -1px #888; }
+
+        .bg-fill { background-size: cover; background-position: center; }
+        .sidebar-icon { color: #215dc6 !important; font-size: 20px !important; transition: transform 0.2s; }
+        .collapsed .sidebar-icon { transform: rotate(-90deg); }
+        .collapsed .sidebar-content { display: none; }
+        
+        .menu-item:hover { background-color: #316ac5; color: white; }
+
+        .xp-list-container {
+            border: 2px solid #d1d1d1;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .grid-row {
+            display: grid;
+            grid-template-columns: 1fr 100px 160px;
+            align-items: center;
+        }
+
+        .xp-list-header {
+            background: linear-gradient(to bottom, #fcfcfc 0%, #e9e9e1 100%);
+            border-bottom: 1px solid #d1d1d1;
+            height: 26px;
+            font-size: 11px;
+            color: #333;
+            box-shadow: inset 0 1px 0 white;
+            font-weight: bold;
+        }
+
+        .header-cell {
+            padding: 0 8px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            border-right: 1px solid #d1d1d1;
+        }
+
+        .task-item {
+            border-bottom: 1px solid #f0f0f0;
+            min-height: 40px;
+            padding: 4px 0;
+        }
+
+        .subtask-item {
+            background-color: #f9f9f9;
+            border-left: 2px solid #0058e3;
+            margin-left: 20px;
+        }
+
+        .task-item:hover { background-color: #e5f3ff; }
+
+        .cell-data {
+            padding: 0 8px;
+            font-size: 12px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .actions-cell {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 6px;
+            padding: 0 8px;
+        }
+
+        .task-name-cell { cursor: text; }
+
+        .task-edit-input {
+            font-size: 12px;
+            border: 1px solid #ff9900;
+            padding: 0 4px;
+            outline: none;
+            width: 90%;
+            height: 24px;
+            background: white;
+            box-shadow: inset 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        #window {
+            position: absolute;
+            margin: 0;
+        }
+
+    </style>
+</head>
+<body class="relative">
+
+    <!-- Welcome Screen - ปรับ Alignment ใหม่ -->
+    <div id="welcomeScreen" onclick="startSystem()">
+        <img id="welcomeLogo" src="https://i.imgur.com/YjyjiRj.gif" alt="XP Logo">
+        <div class="click-to-start">Click anywhere to start</div>
+    </div>
+
+    <!-- Hidden Startup Audio -->
+    <audio id="startupSound" src="https://www.winhistory.de/more/winstart/mp3/winxp.mp3" preload="auto"></audio>
+
+    <div id="desktop">
+        <div class="absolute inset-0 bg-fill z-0" style="background-image: url('https://imgur.com/VvNhMb0.jpg');"></div>
+
+        <div id="window" class="relative w-full max-w-[800px] border-[3px] border-[#0058e3] rounded-t-lg overflow-hidden bg-[#ece9d8] xp-window-shadow z-10 flex flex-col h-[600px]">
+            
+            <div id="titleBar" class="xp-title-bar flex justify-between items-center px-3 flex-shrink-0">
+                <div class="flex items-center gap-3 overflow-hidden flex-1 mr-4 pointer-events-none">
+                    <img src="https://em-content.zobj.net/source/apple/391/check-box-with-check_2611-fe0f.png" class="w-7 h-7 select-none" alt="icon">
+                    <div id="titleContainer" class="flex-1 overflow-hidden min-w-0 pointer-events-auto" ondblclick="editTitle()" title="Double-click to rename">
+                        <span id="windowTitle" class="xp-title-text truncate select-none block">To-Do List (Double-click to rename)</span>
+                    </div>
+                </div>
+                <div class="flex gap-1.5 items-center">
+                    <button class="control-btn btn-minimize"><span class="material-symbols-rounded" style="font-size: 24px; color: white;">minimize</span></button>
+                    <button class="control-btn btn-maximize"><span class="material-symbols-rounded" style="font-size: 18px; color: white;">check_box_outline_blank</span></button>
+                    <button class="control-btn btn-close"><span class="material-symbols-rounded" style="font-size: 24px; color: white;">close</span></button>
+                </div>
+            </div>
+
+            <div id="menuBar" class="flex bg-[#ede9d8] border-b border-[#d1d1d1] p-1 gap-4 px-3 text-[12px]">
+                <div class="menu-item px-1 cursor-default">File</div>
+                <div class="menu-item px-1 cursor-default">Edit</div>
+                <div class="menu-item px-1 cursor-default">View</div>
+                <div class="menu-item px-1 cursor-default">Favorites</div>
+                <div class="menu-item px-1 cursor-default">Help</div>
+            </div>
+
+            <div class="flex flex-1 overflow-hidden">
+                <div class="xp-sidebar custom-scroll">
+                    <div class="sidebar-box" id="boxProgress">
+                        <div class="sidebar-header" onclick="toggleBox('boxProgress')">
+                            <span>Task Overview</span>
+                            <span class="material-symbols-rounded sidebar-icon">expand_more</span>
+                        </div>
+                        <div class="sidebar-content">
+                            <p class="text-[10px] text-gray-600 mb-1">Total Progress:</p>
+                            <div class="xp-progress-container mb-3">
+                                <div id="progressTrack" class="xp-progress-track"></div>
+                            </div>
+                            <p id="progressText" class="text-[12px] font-bold text-center text-blue-800">0% Completed</p>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-box" id="boxChart">
+                        <div class="sidebar-header" onclick="toggleBox('boxChart')">
+                            <span>Task Status</span>
+                            <span class="material-symbols-rounded sidebar-icon">expand_more</span>
+                        </div>
+                        <div class="sidebar-content flex flex-col items-center justify-center">
+                            <div class="relative w-[100px] h-[100px] flex items-center justify-center">
+                                <svg width="100" height="100" viewBox="0 0 32 32">
+                                    <circle id="pieSegment" r="12" cx="16" cy="16" fill="transparent"
+                                        stroke="#2a8d2a" stroke-width="7" stroke-dasharray="0 75.4"
+                                        transform="rotate(-90 16 16)" />
+                                </svg>
+                                <div id="piePercent" class="absolute inset-0 flex items-center justify-center font-bold text-[#0d630d] text-[14px]" style="text-shadow: 1px 1px 0px white;">0%</div>
+                            </div>
+                            <div class="mt-2 text-[10px] text-green-700">Completed Rate</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-1 p-4 flex flex-col overflow-hidden bg-white/40">
+                    <div class="xp-list-container flex-1 shadow-inner overflow-hidden">
+                        
+                        <form id="taskForm" class="p-3 bg-[#ede9d8] border-b border-[#d1d1d1] flex gap-2 items-center">
+                            <input type="text" id="taskInput" class="flex-1 xp-input outline-none bg-white" placeholder="Add a new main task...">
+                            <button type="submit" class="xp-button">Add Task</button>
+                        </form>
+
+                        <div class="xp-list-header grid-row">
+                            <div class="header-cell">Name (Double-click to rename)</div>
+                            <div class="header-cell">Status</div>
+                            <div class="header-cell !border-r-0">Actions</div>
+                        </div>
+                        
+                        <div id="taskList" class="flex-1 overflow-y-auto custom-scroll"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="h-6 bg-[#ede9d8] border-t border-[#d1d1d1] flex items-center justify-between px-2 text-[10px] text-gray-600">
+                <span id="itemCount">0 tasks remaining</span>
+                <div class="flex gap-4">
+                    <span id="clock" class="border-l border-gray-300 pl-2">12:00 PM</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function startSystem() {
+            const welcome = document.getElementById('welcomeScreen');
+            const audio = document.getElementById('startupSound');
+            const desktop = document.getElementById('desktop');
+            audio.play().catch(e => console.log("Audio failed", e));
+            welcome.style.opacity = '0';
+            setTimeout(() => {
+                welcome.style.display = 'none';
+                desktop.style.opacity = '1';
+            }, 1000);
+        }
+
+        // --------------------------------------------------
+        // โค้ดส่วนหลังจากนี้ ห้ามแก้ (คงเดิมตามต้นฉบับของคุณทุกประการ)
+        // --------------------------------------------------
+
+        let tasks = [
+            { id: 1, text: "Wait for Dial-up sound...", completed: false, subtasks: [] },
+            { id: 2, text: "Clean up desktop icons", completed: true, subtasks: [
+                { id: 201, text: "Move to Recycle Bin", completed: true }
+            ] }
+        ];
+
+        let isEditingTitle = false;
+        let editingTaskId = null;
+
+        const win = document.getElementById('window');
+        const titleBar = document.getElementById('titleBar');
+        let isDragging = false;
+        let offset = { x: 0, y: 0 };
+
+        titleBar.addEventListener('mousedown', (e) => {
+            if (e.target.closest('button') || e.target.closest('input')) return;
+            isDragging = true;
+            offset.x = e.clientX - win.offsetLeft;
+            offset.y = e.clientY - win.offsetTop;
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        });
+
+        function onMouseMove(e) {
+            if (!isDragging) return;
+            win.style.left = (e.clientX - offset.x) + 'px';
+            win.style.top = (e.clientY - offset.y) + 'px';
+            win.style.transform = 'none';
+        }
+
+        function onMouseUp() {
+            isDragging = false;
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+        }
+
+        function editTitle() {
+            if (isEditingTitle) return;
+            isEditingTitle = true;
+            const container = document.getElementById('titleContainer');
+            const titleSpan = document.getElementById('windowTitle');
+            if (!titleSpan) { isEditingTitle = false; return; }
+            const currentTitle = titleSpan.innerText;
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.value = currentTitle;
+            input.className = 'xp-title-input';
+            container.innerHTML = '';
+            container.appendChild(input);
+            input.focus();
+            input.select();
+            let hasFinished = false;
+            const finishEdit = () => {
+                if (hasFinished) return;
+                hasFinished = true;
+                const newTitle = input.value.trim() || currentTitle;
+                container.innerHTML = `<span id="windowTitle" class="xp-title-text truncate select-none block">${newTitle}</span>`;
+                isEditingTitle = false;
+            };
+            input.onblur = finishEdit;
+            input.onkeydown = (e) => { if (e.key === 'Enter') { e.preventDefault(); finishEdit(); } };
+        }
+
+        window.startEditingTask = (id) => {
+            editingTaskId = id; render();
+            setTimeout(() => {
+                const input = document.getElementById(`edit-input-${id}`);
+                if (input) { input.focus(); input.select(); }
+            }, 50);
+        }
+
+        window.saveTaskEdit = (id, parentId, newValue) => {
+            if (editingTaskId !== id) return; 
+            newValue = newValue.trim();
+            if (!newValue) { editingTaskId = null; render(); return; }
+            if (parentId === null) tasks = tasks.map(t => t.id === id ? { ...t, text: newValue } : t);
+            else tasks = tasks.map(t => t.id === parentId ? { ...t, subtasks: t.subtasks.map(s => s.id === id ? { ...s, text: newValue } : s) } : t);
+            editingTaskId = null; render();
+        }
+
+        window.toggleBox = (id) => { document.getElementById(id).classList.toggle('collapsed'); }
+
+        function updateStats() {
+            const allTasks = [];
+            const flatten = (list) => {
+                list.forEach(t => {
+                    allTasks.push(t);
+                    if (t.subtasks && t.subtasks.length > 0) flatten(t.subtasks);
+                });
+            };
+            flatten(tasks);
+            const total = allTasks.length;
+            const completed = allTasks.filter(t => t.completed).length;
+            const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
+            const track = document.getElementById('progressTrack');
+            if (track) {
+                const maxBlocks = 18; 
+                const targetBlocks = Math.floor((percent / 100) * maxBlocks);
+                track.innerHTML = '';
+                for(let i = 0; i < targetBlocks; i++) {
+                    const block = document.createElement('div');
+                    block.className = 'xp-progress-block';
+                    track.appendChild(block);
+                }
+            }
+            document.getElementById('progressText').innerText = percent + '% Completed';
+            const pie = document.getElementById('pieSegment');
+            if (pie) {
+                const r = 12;
+                const circum = 2 * Math.PI * r;
+                const offset = (percent / 100) * circum;
+                pie.setAttribute('stroke-dasharray', `${offset} ${circum}`);
+            }
+            const percentText = document.getElementById('piePercent');
+            if (percentText) percentText.innerText = percent + '%';
+            document.getElementById('itemCount').innerText = `${total - completed} task(s) remaining`;
+        }
+
+        function render() {
+            const list = document.getElementById('taskList');
+            list.innerHTML = '';
+            tasks.forEach(task => {
+                list.appendChild(createTaskElement(task, false));
+                if (task.subtasks && task.subtasks.length > 0) {
+                    task.subtasks.forEach(sub => list.appendChild(createTaskElement(sub, true, task.id)));
+                }
+            });
+            updateStats();
+        }
+
+        function createTaskElement(task, isSub = false, parentId = null) {
+            const div = document.createElement('div');
+            div.className = `task-item grid-row group cursor-default select-none ${task.completed ? 'opacity-80' : ''} ${isSub ? 'subtask-item' : ''}`;
+            const isEditing = editingTaskId === task.id;
+            div.innerHTML = `
+                <div class="cell-data flex items-center gap-2 task-name-cell" ondblclick="startEditingTask(${task.id})">
+                    <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask(${task.id}, ${parentId})" class="accent-green-600 shrink-0 cursor-pointer">
+                    ${isEditing ? 
+                        `<input type="text" id="edit-input-${task.id}" class="task-edit-input" value="${task.text}" 
+                            onblur="saveTaskEdit(${task.id}, ${parentId}, this.value)" 
+                            onkeydown="if(event.key==='Enter') { this.onblur=null; saveTaskEdit(${task.id}, ${parentId}, this.value); }">` :
+                        `<span class="${task.completed ? 'line-through text-gray-400' : 'text-gray-800'} truncate">${task.text}</span>`
+                    }
+                </div>
+                <div class="cell-data text-[10px] ${task.completed ? 'text-green-600' : 'text-blue-500'} italic">
+                    ${task.completed ? 'Completed' : 'Active'}
+                </div>
+                <div class="actions-cell">
+                    ${!isSub ? `<button onclick="addSubTask(${task.id})" class="xp-button xp-button-sm opacity-0 group-hover:opacity-100 transition-opacity">Add Sub</button>` : '<div class="w-[58px]"></div>'}
+                    <button onclick="deleteTask(${task.id}, ${parentId})" class="xp-button xp-button-sm xp-button-danger opacity-0 group-hover:opacity-100 transition-opacity">Delete</button>
+                </div>
+            `;
+            return div;
+        }
+
+        window.toggleTask = (id, parentId) => {
+            if (parentId === null) {
+                tasks = tasks.map(t => {
+                    if (t.id === id) {
+                        const newState = !t.completed;
+                        return { ...t, completed: newState, subtasks: (t.subtasks || []).map(s => ({ ...s, completed: newState })) };
+                    }
+                    return t;
+                });
+            } else {
+                tasks = tasks.map(t => {
+                    if (t.id === parentId) {
+                        const newSubtasks = t.subtasks.map(s => s.id === id ? { ...s, completed: !s.completed } : s);
+                        const allSubChecked = newSubtasks.every(s => s.completed);
+                        return { ...t, subtasks: newSubtasks, completed: allSubChecked };
+                    }
+                    return t;
+                });
+            }
+            render();
+        };
+
+        window.deleteTask = (id, parentId) => {
+            if (parentId === null) tasks = tasks.filter(t => t.id !== id);
+            else tasks = tasks.map(t => t.id === parentId ? { ...t, subtasks: t.subtasks.filter(s => s.id !== id) } : t);
+            render();
+        };
+
+        window.addSubTask = (parentId) => {
+            const newSubId = Date.now() + Math.floor(Math.random() * 1000);
+            tasks = tasks.map(t => t.id === parentId ? { ...t, subtasks: [...(t.subtasks || []), { id: newSubId, text: "Add a new sub task...", completed: false }] } : t);
+            render(); startEditingTask(newSubId);
+        };
+
+        document.getElementById('taskForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const input = document.getElementById('taskInput');
+            if (!input.value.trim()) return;
+            tasks.push({ id: Date.now(), text: input.value.trim(), completed: false, subtasks: [] });
+            input.value = ''; render();
+        });
+
+        function updateTime() {
+            const clock = document.getElementById('clock');
+            if (clock) clock.innerText = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+        setInterval(updateTime, 1000); updateTime(); render();
+    </script>
+</body>
+</html>
