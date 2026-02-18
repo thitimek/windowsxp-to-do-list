@@ -5,14 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>☑️ XP To-Do List | จัดการงาน</title>
 
-    <!-- Social Share Meta Tags (Open Graph) -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://thitimek.github.io/windowsxp-to-do-list/">
     <meta property="og:title" content="☑️ XP To-Do List | จัดการงาน">
     <meta property="og:description" content="จัดการงานของคุณในสไตล์ Windows XP สุดคลาสสิก!">
     <meta property="og:image" content="https://thitimek.github.io/windowsxp-to-do-list/og-image.png.png">
 
-    <!-- Twitter Meta Tags -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://thitimek.github.io/windowsxp-to-do-list/">
     <meta property="twitter:title" content="☑️ XP To-Do List | จัดการงาน">
@@ -183,6 +181,13 @@
                 order: 1 !important;
                 min-height: 400px !important;
                 padding: 10px !important;
+            }
+
+            /* Fix Thai Vowel Overflow on Mobile */
+            .cell-data span, .task-edit-input, #typewriter {
+                line-height: 1.6 !important;
+                display: inline-block;
+                padding-top: 2px;
             }
 
             .grid-row {
@@ -391,6 +396,7 @@
             gap: 2px;
             height: 100%;
             position: relative;
+            transition: filter 0.3s ease;
         }
 
         .xp-progress-block {
@@ -414,9 +420,21 @@
             z-index: 5;
         }
 
-        /* UPDATED: Smooth Pie Chart */
+        /* UPDATED: Smooth Pie Chart with Glow Effect */
         #pieSegment {
-            transition: stroke-dasharray 0.5s ease-in-out;
+            transition: stroke-dasharray 0.6s cubic-bezier(0.4, 0, 0.2, 1), filter 0.3s ease;
+            stroke-width: 6; /* Thinned by 15% (from 7 to 6) */
+        }
+
+        /* Animation for Glowing Feedback */
+        @keyframes glowPulse {
+            0% { filter: drop-shadow(0 0 0px #30a030); opacity: 1; }
+            50% { filter: drop-shadow(0 0 8px #b3f3b3); opacity: 0.8; }
+            100% { filter: drop-shadow(0 0 0px #30a030); opacity: 1; }
+        }
+
+        .animate-glow {
+            animation: glowPulse 0.5s ease-in-out 2;
         }
 
         .match-status-style {
@@ -595,13 +613,11 @@
 </head>
 <body class="relative">
 
-    <!-- Welcome Screen -->
     <div id="welcomeScreen" onclick="startSystem()">
         <img id="welcomeLogo" src="https://i.imgur.com/YjyjiRj.gif" alt="XP Logo">
         <div class="click-to-start">Click anywhere to start</div>
     </div>
 
-    <!-- Hidden Startup Audio -->
     <audio id="startupSound" src="https://www.winhistory.de/more/winstart/mp3/winxp.mp3" preload="auto"></audio>
 
     <div id="desktop">
@@ -642,7 +658,6 @@
                             <p class="text-[10px] text-gray-600 mb-1">Total Progress:</p>
                             <div class="xp-progress-container mb-3">
                                 <div id="progressTrack" class="xp-progress-track">
-                                    <!-- Pre-filled blocks for smoother reveal -->
                                     <div class="xp-progress-block"></div><div class="xp-progress-block"></div>
                                     <div class="xp-progress-block"></div><div class="xp-progress-block"></div>
                                     <div class="xp-progress-block"></div><div class="xp-progress-block"></div>
@@ -676,7 +691,7 @@
                                         </radialGradient>
                                     </defs>
                                     <circle id="pieSegment" r="12" cx="16" cy="16" fill="transparent"
-                                        stroke="url(#xpGreenGradient)" stroke-width="7" stroke-dasharray="0 75.4"
+                                        stroke="url(#xpGreenGradient)" stroke-dasharray="0 75.4"
                                         transform="rotate(-90 16 16)" />
                                 </svg>
                                 <div id="piePercent" class="absolute inset-0 flex items-center justify-center match-status-style !not-italic font-bold text-[18px]" style="text-shadow: 1px 1px 0px white;">0%</div>
@@ -713,7 +728,6 @@
             </div>
         </div>
 
-        <!-- Footer Section -->
         <div id="creditArea">
             <div class="typewriter-text"><span id="typewriter"></span><span class="cursor"></span></div>
             <div class="social-container">
@@ -894,7 +908,7 @@
 
         window.toggleBox = (id) => { document.getElementById(id).classList.toggle('collapsed'); }
 
-        // UPDATED: Smooth Animation Logic for Progress and Pie Chart
+        // UPDATED: Smooth Animation Logic with Glow feedback
         function updateStats() {
             const allTasks = [];
             const flatten = (list) => {
@@ -908,21 +922,30 @@
             const completed = allTasks.filter(t => t.completed).length;
             const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
 
-            // Smooth Progress Mask Update
+            // 1. Smooth Progress Mask Update
             const mask = document.getElementById('progressMask');
+            const track = document.getElementById('progressTrack');
             if (mask) {
-                // mask width 100% means hidden, 0% means fully revealed
                 mask.style.width = (100 - percent) + '%';
+                // Trigger Glow Animation
+                track.classList.remove('animate-glow');
+                void track.offsetWidth; // Trigger reflow
+                track.classList.add('animate-glow');
             }
             document.getElementById('progressText').innerText = percent + '% Completed';
 
-            // Smooth SVG Pie Chart Update
+            // 2. Smooth SVG Pie Chart Update
             const pie = document.getElementById('pieSegment');
             if (pie) {
                 const r = 12;
                 const circum = 2 * Math.PI * r;
                 const strokeValue = (percent / 100) * circum;
                 pie.setAttribute('stroke-dasharray', `${strokeValue} ${circum}`);
+                
+                // Trigger Glow Animation
+                pie.classList.remove('animate-glow');
+                void pie.offsetWidth; // Trigger reflow
+                pie.classList.add('animate-glow');
             }
             const percentText = document.getElementById('piePercent');
             if (percentText) percentText.innerText = percent + '%';
