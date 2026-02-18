@@ -103,21 +103,122 @@
             margin: 0;
             width: 800px;
             height: 600px;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Tablet responsiveness: ปรับขนาดเป็น 600x600 เมื่อจอเล็กลง */
-        @media (max-width: 850px) {
+        /* Tablet responsiveness (590px - 850px) */
+        @media (max-width: 850px) and (min-width: 590px) {
             #window {
                 width: 600px !important;
                 height: 600px !important;
                 max-width: 95vw;
+                position: relative !important;
+                left: 0 !important;
+                top: 0 !important;
+                transform: none !important;
+            }
+
+            .xp-sidebar {
+                width: 160px !important;
+            }
+
+            .grid-row {
+                grid-template-columns: 1fr 80px 110px !important;
+            }
+
+            .header-cell, .cell-data {
+                padding: 0 4px !important;
+                font-size: 11px !important;
+            }
+
+            .xp-button-sm {
+                padding: 1px 4px !important;
+                opacity: 1 !important; 
+            }
+
+            #creditArea {
+                padding: 10px 20px !important;
+                bottom: 15px !important;
+                gap: 14px !important; 
+            }
+            .boot-button {
+                background: #ffffff !important;
+                color: #000000 !important;
+                padding: 2px 10px !important; /* Compact padding */
             }
         }
 
-        @media (max-width: 650px) {
+        /* Mobile Phone Solution */
+        @media (max-width: 589px) {
             #window {
-                width: 95vw !important;
-                height: 80vh !important;
+                width: 98vw !important;
+                height: 70vh !important;
+                position: relative !important;
+                left: 0 !important;
+                top: 0 !important;
+                transform: none !important;
+            }
+            
+            .main-content-wrapper {
+                flex-direction: column !important;
+                overflow-y: auto !important;
+            }
+
+            .xp-sidebar {
+                width: 100% !important;
+                flex-shrink: 0 !important;
+                order: 2 !important; 
+                padding: 10px !important;
+                overflow-y: visible !important;
+            }
+
+            .main-app-area {
+                flex: 1 0 auto !important;
+                order: 1 !important;
+                min-height: 400px !important;
+                padding: 10px !important;
+            }
+
+            .grid-row {
+                grid-template-columns: 1fr 100px !important;
+            }
+
+            .header-cell:nth-child(2), 
+            .task-item > div:nth-child(2) {
+                display: none !important;
+            }
+
+            .xp-button-sm {
+                opacity: 1 !important;
+            }
+
+            /* Mobile Credit Styling */
+            #creditArea {
+                padding: 12px 16px !important;
+                bottom: 10px !important;
+                gap: 12px !important;
+                align-items: center !important;
+                width: fit-content !important; /* Prevent stretching */
+            }
+            #creditArea .social-container {
+                flex-direction: column !important; 
+                width: auto !important; /* Don't stretch container */
+                align-items: center;
+                gap: 6px;
+            }
+            .boot-button {
+                width: fit-content !important; /* Prevent stretching */
+                min-width: 80px;
+                justify-content: center;
+                background: #ffffff !important; 
+                color: #000000 !important;
+                font-size: 12px !important;
+                padding: 2px 10px !important; /* Compact padding */
+            }
+            .typewriter-text { 
+                font-size: 12px !important; 
+                height: 16px !important;
             }
         }
 
@@ -127,22 +228,6 @@
             z-index: 50;
             height: 48px;
             cursor: move;
-        }
-
-        .editable-title-container {
-            transition: all 0.2s;
-            border: 1px solid transparent;
-            border-radius: 4px;
-            padding: 2px 8px;
-            cursor: text;
-            display: flex;
-            align-items: center;
-        }
-
-        .editable-title-container:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.3);
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
         }
 
         .xp-title-text {
@@ -286,11 +371,6 @@
             font-size: 13px;
         }
 
-        .xp-input:focus {
-            border-color: #4a90e2;
-            box-shadow: inset 1px 1px 1px rgba(0,0,0,0.1), 0 0 2px rgba(74, 144, 226, 0.5);
-        }
-
         .xp-progress-container {
             background: #ffffff;
             border: 1px solid #716f64;
@@ -314,18 +394,11 @@
             animation: blockIn 0.3s forwards;
         }
 
-        @keyframes blockIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
-
         .match-status-style {
-            color: #16a34a; /* green-600 */
+            color: #16a34a; 
             font-size: 12px;
             font-style: italic;
             font-weight: normal;
-        }
-
-        #pieSegment { 
-            transition: stroke-dasharray 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            filter: drop-shadow(0 0 2px rgba(16, 128, 16, 0.3));
         }
 
         .custom-scroll::-webkit-scrollbar { width: 14px; }
@@ -381,8 +454,6 @@
             margin-left: 20px;
         }
 
-        .task-item:hover { background-color: #e5f3ff; }
-
         .cell-data {
             padding: 0 8px;
             font-size: 12px;
@@ -399,8 +470,6 @@
             padding: 0 8px;
         }
 
-        .task-name-cell { cursor: text; }
-
         .task-edit-input {
             font-size: 12px;
             border: 1px solid #ff9900;
@@ -410,6 +479,91 @@
             height: 24px;
             background: white;
             box-shadow: inset 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        /* --- Footer Styles --- */
+        #creditArea {
+            position: fixed;
+            bottom: 20px;
+            background: rgba(0, 0, 0, 0.65);
+            padding: 10px 20px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px; 
+            z-index: 100;
+            font-family: 'Tahoma', sans-serif;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            width: max-content;
+            max-width: 95vw;
+        }
+
+        .typewriter-text {
+            font-size: 16px;
+            color: #ffffff;
+            height: 20px;
+            text-align: center;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 6px;
+            height: 16px;
+            background: #fff;
+            margin-left: 4px;
+            animation: blink 0.8s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        .social-container {
+            display: flex;
+            gap: 12px;
+        }
+
+        .boot-button {
+            background: transparent;
+            border: 1px solid #ffffff;
+            color: #ffffff;
+            padding: 2px 10px; /* Compact padding */
+            font-size: 16px; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-radius: 4px;
+            width: fit-content;
+        }
+
+        .boot-button:hover {
+            background: #ffffff;
+            color: #000000;
+        }
+
+        .social-icon-svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        @media (min-width: 851px) {
+            .task-item button {
+                opacity: 0;
+                transition: opacity 0.1s;
+            }
+            .task-item:hover button {
+                opacity: 1;
+            }
         }
 
     </style>
@@ -428,7 +582,7 @@
     <div id="desktop">
         <div class="absolute inset-0 bg-fill z-0" style="background-image: url('https://imgur.com/VvNhMb0.jpg');"></div>
 
-        <div id="window" class="relative border-[3px] border-[#0058e3] rounded-t-lg overflow-hidden bg-[#ece9d8] xp-window-shadow z-10 flex flex-col">
+        <div id="window" class="relative border-[3px] border-[#0058e3] rounded-t-lg overflow-hidden bg-[#ece9d8] xp-window-shadow z-10">
             
             <div id="titleBar" class="xp-title-bar flex justify-between items-center px-3 flex-shrink-0">
                 <div class="flex items-center gap-3 overflow-hidden flex-1 mr-4 pointer-events-none">
@@ -452,7 +606,7 @@
                 <div class="menu-item px-1 cursor-default">Help</div>
             </div>
 
-            <div class="flex flex-1 overflow-hidden">
+            <div class="main-content-wrapper flex flex-1 overflow-hidden">
                 <div class="xp-sidebar custom-scroll">
                     <div class="sidebar-box" id="boxProgress">
                         <div class="sidebar-header" onclick="toggleBox('boxProgress')">
@@ -495,7 +649,7 @@
                     </div>
                 </div>
 
-                <div class="flex-1 p-4 flex flex-col overflow-hidden bg-white/40">
+                <div class="main-app-area flex-1 p-4 flex flex-col overflow-hidden bg-white/40">
                     <div class="xp-list-container flex-1 shadow-inner overflow-hidden">
                         
                         <form id="taskForm" class="p-3 bg-[#ede9d8] border-b border-[#d1d1d1] flex gap-2 items-center">
@@ -521,6 +675,22 @@
                 </div>
             </div>
         </div>
+
+        <!-- Footer Section -->
+        <div id="creditArea">
+            <div class="typewriter-text"><span id="typewriter"></span><span class="cursor"></span></div>
+            <div class="social-container">
+                <a href="http://facebook.com/thitimek1995" target="_blank" class="boot-button">
+                    <svg class="social-icon-svg" viewBox="0 0 24 24"><polygon points="23 9 23 15 22 15 22 17 21 17 21 19 20 19 20 20 19 20 19 21 17 21 17 22 15 22 15 23 14 23 14 15 16 15 16 14 17 14 17 12 14 12 14 9 15 9 15 8 17 8 17 5 13 5 13 6 11 6 11 8 10 8 10 12 7 12 7 15 10 15 10 23 9 23 9 22 7 22 7 21 5 21 5 20 4 20 4 19 3 19 3 17 2 17 2 15 1 15 1 9 2 9 2 7 3 7 3 5 4 5 4 4 5 4 5 3 7 3 7 2 9 2 9 1 15 1 15 2 17 2 17 3 19 3 19 4 20 4 20 5 21 5 21 7 22 7 22 9 23 9"/></svg> FB
+                </a>
+                <a href="https://www.instagram.com/recordbythiti" target="_blank" class="boot-button">
+                    <svg class="social-icon-svg" viewBox="0 0 24 24"><path d="m17,9v-1h-1v-1h-1v-1h-6v1h-1v1h-1v1h-1v6h1v1h1v1h1v1h6v-1h1v-1h1v-1h1v-6h-1Zm-1,5h-1v1h-1v1h-4v-1h-1v-1h-1v-4h1v-1h1v-1h4v1h1v1h1v4Z"/><path d="m22,5v-2h-1v-1h-2v-1H5v1h-2v1h-1v2h-1v14h1v2h1v1h2v1h14v-1h2v-1h1v-2h1V5h-1Zm-1,14h-1v1h-1v1H5v-1h-1v-1h-1V5h1v-1h1v-1h14v1h1v1h1v14Z"/><rect x="17" y="5" width="2" height="2"/></svg> IG
+                </a>
+                <a href="https://www.linkedin.com/in/thitimekrungrojn/" target="_blank" class="boot-button">
+                    <svg class="social-icon-svg" viewBox="0 0 24 24"><path d="m22,2v-1H2v1h-1v20h1v1h20v-1h1V2h-1Zm-9,10v8h-3v-11h3v1h1v-1h4v1h1v10h-3v-8h-3Zm-9-4v-3h3v3h-3Zm3,1v11h-3v-11h3Z"/></svg> L
+                </a>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -533,15 +703,80 @@
             setTimeout(() => {
                 welcome.style.display = 'none';
                 desktop.style.opacity = '1';
+                startTypewriter();
             }, 1000);
         }
 
-        let tasks = [
-            { id: 1, text: "Wait for Dial-up sound...", completed: false, subtasks: [] },
-            { id: 2, text: "Clean up desktop icons", completed: true, subtasks: [
-                { id: 201, text: "Move to Recycle Bin", completed: true }
-            ] }
+        const phrases = [
+            "นี่คือโปรเจ็กต์ทดลองอันดับ 1 ของนายธิติ",
+            "แอปจัดการงานสไตล์ Windows XP",
+            "คุณสามารถพูดคุยกับผู้จัดทำได้ที่ช่องทางข้างล่างนี้",
+            "ขอบคุณครับ"
         ];
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typeSpeed = 50; 
+        const deleteSpeed = 25; 
+        const delayBetween = 2500;
+
+        function startTypewriter() {
+            const typewriter = document.getElementById('typewriter');
+            const currentPhrase = phrases[phraseIndex];
+            
+            if (isDeleting) {
+                typewriter.innerText = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typewriter.innerText = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let nextSpeed = isDeleting ? deleteSpeed : typeSpeed;
+
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                isDeleting = true;
+                nextSpeed = delayBetween;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                nextSpeed = 500;
+            }
+
+            setTimeout(startTypewriter, nextSpeed);
+        }
+
+        function saveToLocalStorage() {
+            const dataToSave = {
+                tasks: tasks,
+                windowTitle: document.getElementById('windowTitle')?.innerText || "To-Do List (Double-click to rename)"
+            };
+            localStorage.setItem('xp_todo_data', JSON.stringify(dataToSave));
+        }
+
+        function loadFromLocalStorage() {
+            const savedData = localStorage.getItem('xp_todo_data');
+            if (savedData) {
+                try {
+                    const parsed = JSON.parse(savedData);
+                    tasks = parsed.tasks || [];
+                    if (parsed.windowTitle) {
+                        const titleSpan = document.getElementById('windowTitle');
+                        if (titleSpan) titleSpan.innerText = parsed.windowTitle;
+                    }
+                } catch (e) { console.error("Error loading data", e); }
+            } else {
+                tasks = [
+                    { id: 1, text: "Wait for Dial-up sound...", completed: false, subtasks: [] },
+                    { id: 2, text: "Clean up desktop icons", completed: true, subtasks: [
+                        { id: 201, text: "Move to Recycle Bin", completed: true }
+                    ] }
+                ];
+            }
+        }
+
+        let tasks = []; 
+        loadFromLocalStorage();
 
         let isEditingTitle = false;
         let editingTaskId = null;
@@ -595,6 +830,7 @@
                 const newTitle = input.value.trim() || currentTitle;
                 container.innerHTML = `<span id="windowTitle" class="xp-title-text truncate select-none block">${newTitle}</span>`;
                 isEditingTitle = false;
+                saveToLocalStorage();
             };
             input.onblur = finishEdit;
             input.onkeydown = (e) => { if (e.key === 'Enter') { e.preventDefault(); finishEdit(); } };
@@ -614,7 +850,9 @@
             if (!newValue) { editingTaskId = null; render(); return; }
             if (parentId === null) tasks = tasks.map(t => t.id === id ? { ...t, text: newValue } : t);
             else tasks = tasks.map(t => t.id === parentId ? { ...t, subtasks: t.subtasks.map(s => s.id === id ? { ...s, text: newValue } : s) } : t);
-            editingTaskId = null; render();
+            editingTaskId = null; 
+            render();
+            saveToLocalStorage();
         }
 
         window.toggleBox = (id) => { document.getElementById(id).classList.toggle('collapsed'); }
@@ -685,8 +923,8 @@
                     ${task.completed ? 'Completed' : 'Active'}
                 </div>
                 <div class="actions-cell">
-                    ${!isSub ? `<button onclick="addSubTask(${task.id})" class="xp-button xp-button-sm opacity-0 group-hover:opacity-100 transition-opacity">Add Sub</button>` : '<div class="w-[58px]"></div>'}
-                    <button onclick="deleteTask(${task.id}, ${parentId})" class="xp-button xp-button-sm xp-button-danger opacity-0 group-hover:opacity-100 transition-opacity">Delete</button>
+                    ${!isSub ? `<button onclick="addSubTask(${task.id})" class="xp-button xp-button-sm">Add Sub</button>` : '<div class="w-[58px]"></div>'}
+                    <button onclick="deleteTask(${task.id}, ${parentId})" class="xp-button xp-button-sm xp-button-danger">Delete</button>
                 </div>
             `;
             return div;
@@ -712,18 +950,22 @@
                 });
             }
             render();
+            saveToLocalStorage();
         };
 
         window.deleteTask = (id, parentId) => {
             if (parentId === null) tasks = tasks.filter(t => t.id !== id);
             else tasks = tasks.map(t => t.id === parentId ? { ...t, subtasks: t.subtasks.filter(s => s.id !== id) } : t);
             render();
+            saveToLocalStorage();
         };
 
         window.addSubTask = (parentId) => {
             const newSubId = Date.now() + Math.floor(Math.random() * 1000);
             tasks = tasks.map(t => t.id === parentId ? { ...t, subtasks: [...(t.subtasks || []), { id: newSubId, text: "Add a new sub task...", completed: false }] } : t);
-            render(); startEditingTask(newSubId);
+            render(); 
+            startEditingTask(newSubId);
+            saveToLocalStorage();
         };
 
         document.getElementById('taskForm').addEventListener('submit', (e) => {
@@ -731,7 +973,9 @@
             const input = document.getElementById('taskInput');
             if (!input.value.trim()) return;
             tasks.push({ id: Date.now(), text: input.value.trim(), completed: false, subtasks: [] });
-            input.value = ''; render();
+            input.value = ''; 
+            render();
+            saveToLocalStorage();
         });
 
         function updateTime() {
