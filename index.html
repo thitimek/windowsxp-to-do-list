@@ -8,9 +8,8 @@
     <!-- Social Share Meta Tags (Open Graph) -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://thitimek.github.io/windowsxp-to-do-list/">
-    <meta property="og:title" content="XP To-Do List - จัดการงาน">
+    <meta property="og:title" content="☑️ XP To-Do List | จัดการงาน">
     <meta property="og:description" content="จัดการงานของคุณในสไตล์ Windows XP สุดคลาสสิก!">
-    <!-- แก้ไขลิงก์รูปภาพให้ตรงกับชื่อไฟล์จริงใน GitHub ของคุณ (og-image.png.png) -->
     <meta property="og:image" content="https://thitimek.github.io/windowsxp-to-do-list/og-image.png.png">
 
     <!-- Twitter Meta Tags -->
@@ -38,7 +37,7 @@
             background-color: black;
         }
 
-        /* Welcome Screen Styling - ปรับ Alignment ให้ตรงกึ่งกลางแม่นยำขึ้น */
+        /* Welcome Screen Styling */
         #welcomeScreen {
             position: fixed;
             inset: 0;
@@ -47,7 +46,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center; /* จัดกึ่งกลางแนวตั้งและแนวนอน */
+            justify-content: center;
             cursor: pointer;
             transition: opacity 1s ease-out;
             overflow: hidden;
@@ -59,7 +58,7 @@
             width: 240px;
             height: auto;
             display: block;
-            margin: 0 0 20px 0; /* กำหนด margin ให้แน่นอนเพื่อไม่ให้เบี้ยว */
+            margin: 0 0 20px 0;
         }
 
         @keyframes fadeInAll {
@@ -82,10 +81,6 @@
             0%, 100% { opacity: 0.3; }
             50% { opacity: 1; }
         }
-
-        /* -------------------------------------------------- */
-        /* โค้ดส่วนหลังจากนี้ ห้ามแก้ (คงเดิมตามต้นฉบับของคุณทุกประการ) */
-        /* -------------------------------------------------- */
 
         /* Main Desktop Area */
         #desktop {
@@ -191,7 +186,6 @@
             overflow: hidden;
             box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
             border: 1px solid #ffffff;
-            transition: all 0.2s;
         }
 
         .sidebar-header {
@@ -214,6 +208,15 @@
         .sidebar-content {
             background: white;
             padding: 10px;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+            max-height: 500px;
+        }
+
+        .sidebar-box.collapsed .sidebar-content {
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
         }
 
         .xp-button {
@@ -292,7 +295,18 @@
 
         @keyframes blockIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
 
-        #pieSegment { transition: stroke-dasharray 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .match-status-style {
+            color: #16a34a; /* green-600 */
+            font-size: 12px;
+            font-style: italic;
+            font-weight: normal;
+        }
+
+        /* Improved Glow Effect: Radial gradient on the stroke */
+        #pieSegment { 
+            transition: stroke-dasharray 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 0 2px rgba(16, 128, 16, 0.3));
+        }
 
         .custom-scroll::-webkit-scrollbar { width: 14px; }
         .custom-scroll::-webkit-scrollbar-track { background: #ece9d8; border: 1px solid #716f64; }
@@ -301,7 +315,6 @@
         .bg-fill { background-size: cover; background-position: center; }
         .sidebar-icon { color: #215dc6 !important; font-size: 20px !important; transition: transform 0.2s; }
         .collapsed .sidebar-icon { transform: rotate(-90deg); }
-        .collapsed .sidebar-content { display: none; }
         
         .menu-item:hover { background-color: #316ac5; color: white; }
 
@@ -388,7 +401,7 @@
 </head>
 <body class="relative">
 
-    <!-- Welcome Screen - ปรับ Alignment ใหม่ -->
+    <!-- Welcome Screen -->
     <div id="welcomeScreen" onclick="startSystem()">
         <img id="welcomeLogo" src="https://i.imgur.com/YjyjiRj.gif" alt="XP Logo">
         <div class="click-to-start">Click anywhere to start</div>
@@ -436,7 +449,7 @@
                             <div class="xp-progress-container mb-3">
                                 <div id="progressTrack" class="xp-progress-track"></div>
                             </div>
-                            <p id="progressText" class="text-[12px] font-bold text-center text-blue-800">0% Completed</p>
+                            <p id="progressText" class="match-status-style text-center">0% Completed</p>
                         </div>
                     </div>
 
@@ -446,15 +459,24 @@
                             <span class="material-symbols-rounded sidebar-icon">expand_more</span>
                         </div>
                         <div class="sidebar-content flex flex-col items-center justify-center">
-                            <div class="relative w-[100px] h-[100px] flex items-center justify-center">
-                                <svg width="100" height="100" viewBox="0 0 32 32">
+                            <div class="relative w-[110px] h-[110px] flex items-center justify-center">
+                                <svg width="110" height="110" viewBox="0 0 32 32">
+                                    <defs>
+                                        <!-- Real Glow Gradient from center of the line -->
+                                        <radialGradient id="xpGreenGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                                            <stop offset="0%" style="stop-color:#ffffff; stop-opacity:1" />
+                                            <stop offset="30%" style="stop-color:#b3f3b3; stop-opacity:1" />
+                                            <stop offset="85%" style="stop-color:#30a030; stop-opacity:1" />
+                                            <stop offset="100%" style="stop-color:#108010; stop-opacity:1" />
+                                        </radialGradient>
+                                    </defs>
                                     <circle id="pieSegment" r="12" cx="16" cy="16" fill="transparent"
-                                        stroke="#2a8d2a" stroke-width="7" stroke-dasharray="0 75.4"
+                                        stroke="url(#xpGreenGradient)" stroke-width="7" stroke-dasharray="0 75.4"
                                         transform="rotate(-90 16 16)" />
                                 </svg>
-                                <div id="piePercent" class="absolute inset-0 flex items-center justify-center font-bold text-[#0d630d] text-[14px]" style="text-shadow: 1px 1px 0px white;">0%</div>
+                                <div id="piePercent" class="absolute inset-0 flex items-center justify-center match-status-style !not-italic font-bold text-[18px]" style="text-shadow: 1px 1px 0px white;">0%</div>
                             </div>
-                            <div class="mt-2 text-[10px] text-green-700">Completed Rate</div>
+                            <div class="mt-2 match-status-style">Completed Rate</div>
                         </div>
                     </div>
                 </div>
@@ -499,10 +521,6 @@
                 desktop.style.opacity = '1';
             }, 1000);
         }
-
-        // --------------------------------------------------
-        // โค้ดส่วนหลังจากนี้ ห้ามแก้ (คงเดิมตามต้นฉบับของคุณทุกประการ)
-        // --------------------------------------------------
 
         let tasks = [
             { id: 1, text: "Wait for Dial-up sound...", completed: false, subtasks: [] },
