@@ -97,6 +97,30 @@
             box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.4);
         }
 
+        /* Window responsive sizing */
+        #window {
+            position: absolute;
+            margin: 0;
+            width: 800px;
+            height: 600px;
+        }
+
+        /* Tablet responsiveness: ปรับขนาดเป็น 600x600 เมื่อจอเล็กลง */
+        @media (max-width: 850px) {
+            #window {
+                width: 600px !important;
+                height: 600px !important;
+                max-width: 95vw;
+            }
+        }
+
+        @media (max-width: 650px) {
+            #window {
+                width: 95vw !important;
+                height: 80vh !important;
+            }
+        }
+
         .xp-title-bar {
             background: linear-gradient(to bottom, #0058e3 0%, #3583f7 10%, #0058e3 40%, #0058e3 100%);
             position: relative;
@@ -209,7 +233,6 @@
             background: white;
             padding: 10px;
             overflow: hidden;
-            /* Removed transition and max-height logic to prevent lag */
             display: block;
         }
 
@@ -300,7 +323,6 @@
             font-weight: normal;
         }
 
-        /* Improved Glow Effect: Radial gradient on the stroke */
         #pieSegment { 
             transition: stroke-dasharray 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             filter: drop-shadow(0 0 2px rgba(16, 128, 16, 0.3));
@@ -390,11 +412,6 @@
             box-shadow: inset 1px 1px 2px rgba(0,0,0,0.1);
         }
 
-        #window {
-            position: absolute;
-            margin: 0;
-        }
-
     </style>
 </head>
 <body class="relative">
@@ -411,7 +428,7 @@
     <div id="desktop">
         <div class="absolute inset-0 bg-fill z-0" style="background-image: url('https://imgur.com/VvNhMb0.jpg');"></div>
 
-        <div id="window" class="relative w-full max-w-[800px] border-[3px] border-[#0058e3] rounded-t-lg overflow-hidden bg-[#ece9d8] xp-window-shadow z-10 flex flex-col h-[600px]">
+        <div id="window" class="relative border-[3px] border-[#0058e3] rounded-t-lg overflow-hidden bg-[#ece9d8] xp-window-shadow z-10 flex flex-col">
             
             <div id="titleBar" class="xp-title-bar flex justify-between items-center px-3 flex-shrink-0">
                 <div class="flex items-center gap-3 overflow-hidden flex-1 mr-4 pointer-events-none">
@@ -460,7 +477,6 @@
                             <div class="relative w-[110px] h-[110px] flex items-center justify-center">
                                 <svg width="110" height="110" viewBox="0 0 32 32">
                                     <defs>
-                                        <!-- Real Glow Gradient from center of the line -->
                                         <radialGradient id="xpGreenGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
                                             <stop offset="0%" style="stop-color:#ffffff; stop-opacity:1" />
                                             <stop offset="30%" style="stop-color:#b3f3b3; stop-opacity:1" />
